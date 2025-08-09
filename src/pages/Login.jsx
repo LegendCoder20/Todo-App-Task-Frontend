@@ -1,7 +1,13 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
+import AuthForm from "../Forms/AuthForm";
 
 function Login() {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
   useEffect(() => {
     const getUser = async () => {
       let token = localStorage.getItem("token");
@@ -17,22 +23,16 @@ function Login() {
     getUser();
   }, []);
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const hEmail = (e) => setEmail(e.target.value);
-  const hPassword = (e) => setPassword(e.target.value);
-
   const login = async (e) => {
     e.preventDefault();
     let token;
     try {
       const res = await axios.post("http://localhost:5000/api/", {
-        email,
-        password,
+        email: formData.email,
+        password: formData.password,
       });
       token = res.data.token;
-      console.log(res.data.token);
+      console.log(res.data);
     } catch (err) {
       console.log(err.response?.data?.message);
     }
@@ -42,33 +42,13 @@ function Login() {
 
   return (
     <>
-      <div className="login-container">
-        <h1>Login Page</h1>
-        <br />
-        <br />
-        <form>
-          <input
-            type="email"
-            name="email"
-            placeholder="Enter your Email"
-            required
-            autoComplete="on"
-            onChange={hEmail}
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Enter your Password"
-            required
-            autoComplete="on"
-            onChange={hPassword}
-          />
-          <br />
-          <br />
-          <button type="submit" onClick={login}>
-            Login
-          </button>
-        </form>
+      <div className="register-container">
+        <AuthForm
+          mode="login"
+          formData={formData}
+          setFormData={setFormData}
+          onSubmit={login}
+        ></AuthForm>
       </div>
     </>
   );

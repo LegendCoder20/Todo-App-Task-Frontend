@@ -1,4 +1,5 @@
 import "./App.css";
+import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import Dashboard from "./Main Pages/Dashboard";
 import Register from "./pages/Register";
 import Login from "./pages/Login";

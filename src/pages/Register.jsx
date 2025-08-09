@@ -1,7 +1,15 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
+import AuthForm from "../Forms/AuthForm";
 
 function Register() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
   useEffect(() => {
     const getUser = async () => {
       let token = localStorage.getItem("token");
@@ -17,18 +25,14 @@ function Register() {
     getUser();
   }, []);
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const hName = (e) => setName(e.target.value);
-  const hEmail = (e) => setEmail(e.target.value);
-  const hPassword = (e) => setPassword(e.target.value);
-
   const register = async (e) => {
     e.preventDefault();
     const registerUser = await axios
-      .post("http://localhost:5000/api/register", {name, email, password})
+      .post("http://localhost:5000/api/register", {
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+      })
       .then((data) => {
         console.log(data);
       });
@@ -38,40 +42,12 @@ function Register() {
   return (
     <>
       <div className="register-container">
-        <h1>Register Page</h1>
-        <br />
-        <br />
-        <form>
-          <input
-            type="text"
-            name="name"
-            placeholder="Enter your Name"
-            required
-            autoComplete="on"
-            onChange={hName}
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Enter your Email"
-            required
-            autoComplete="on"
-            onChange={hEmail}
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Enter your Password"
-            required
-            autoComplete="on"
-            onChange={hPassword}
-          />
-          <br />
-          <br />
-          <button type="submit" onClick={register}>
-            Register
-          </button>
-        </form>
+        <AuthForm
+          mode="register"
+          formData={formData}
+          setFormData={setFormData}
+          onSubmit={register}
+        ></AuthForm>
       </div>
     </>
   );
