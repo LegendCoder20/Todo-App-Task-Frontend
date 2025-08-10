@@ -16,12 +16,9 @@ function UpdateTodo() {
 
   useEffect(() => {
     const getTodos = async () => {
-      const token = localStorage.getItem("token");
       const res = await axios.get(
         `${import.meta.env.VITE_API_URL}/todo/${id}`,
-        {
-          headers: {Authorization: `Bearer ${token}`},
-        }
+        {withCredentials: true}
       );
 
       setFormData({
@@ -36,22 +33,18 @@ function UpdateTodo() {
   const updateTodo = async (e) => {
     e.preventDefault();
     try {
-      let token = localStorage.getItem("token");
-      if (!token) {
-        nav("/");
-        return;
-      }
-
       const res = await axios.put(
         `${import.meta.env.VITE_API_URL}/todo/${id}`,
         {
           title: formData.title,
           description: formData.description,
         },
-        {headers: {Authorization: `Bearer ${token}`}}
+        {withCredentials: true}
       );
-      nav("/dashboard");
-      console.log(res);
+
+      if (res.status === 200) {
+        nav("/dashboard");
+      }
     } catch (err) {
       let errMsg = err.response?.data?.message;
       setError(errMsg);

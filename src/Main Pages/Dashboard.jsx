@@ -11,47 +11,48 @@ function Dashboard() {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    const getTodos = async () => {
-      let token = localStorage.getItem("token");
-      if (!token) {
-        nav("/");
-      }
-      const allTodos = await axios.get(
-        `${import.meta.env.VITE_API_URL}/todos`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setTodos(allTodos.data.todos);
-    };
-
-    getTodos();
+    try {
+      const getTodos = async () => {
+        const allTodos = await axios.get(
+          `${import.meta.env.VITE_API_URL}/todos`,
+          {withCredentials: true}
+        );
+        setTodos(allTodos.data.todos);
+      };
+      getTodos();
+    } catch (err) {
+      nav("/");
+    }
   }, []);
 
   const deleteTodoData = async (id) => {
-    let token = localStorage.getItem("token");
-    if (!token) {
+    try {
+      const deleteTodo = await axios.delete(
+        `${import.meta.env.VITE_API_URL}/${id}`,
+        {withCredentials: true}
+      );
+      setMessage(deleteTodo.data.message);
+      setTimeout(() => {
+        setMessage("");
+      }, 4000);
+      setTodos((prevTodos) => prevTodos.filter((todos) => todos._id !== id));
+    } catch (err) {
       nav("/");
-      return;
     }
-    const deleteTodo = await axios.delete(
-      `${import.meta.env.VITE_API_URL}/${id}`,
-      {
-        headers: {Authorization: `Bearer ${token}`},
-      }
-    );
-    setMessage(deleteTodo.data.message);
-    setTimeout(() => {
-      setMessage("");
-    }, 4000);
-    setTodos((prevTodos) => prevTodos.filter((todos) => todos._id !== id));
   };
 
   const logOut = async () => {
-    localStorage.removeItem("token");
-    nav("/");
+    try {
+      const logOutUser = await axios.post(
+        `${import.meta.env.VITE_API_URL}/logOut`,
+        {},
+        {withCredentials: true}
+      );
+
+      nav("/");
+    } catch (err) {
+      nav("/");
+    }
   };
 
   return (

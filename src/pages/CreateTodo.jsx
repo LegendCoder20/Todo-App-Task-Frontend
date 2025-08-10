@@ -16,22 +16,14 @@ function CreateTodo() {
   const createTodo = async (e) => {
     e.preventDefault();
     try {
-      let token = localStorage.getItem("token");
-      if (!token) {
-        nav("/");
-        return;
-      }
-
       const res = await axios.post(
         `${import.meta.env.VITE_API_URL}/createTodo`,
         {title: formData.title, description: formData.description},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        {withCredentials: true}
       );
-      await nav("/dashboard");
+      if (res.status === 201) {
+        nav("/dashboard");
+      }
     } catch (err) {
       let errMsg = err.response?.data?.message;
       setError(errMsg);

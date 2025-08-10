@@ -17,13 +17,10 @@ function Login() {
 
   useEffect(() => {
     const getUser = async () => {
-      let token = localStorage.getItem("token");
-      if (token) {
-        const res = await axios.get(`${import.meta.env.VITE_API_URL}/getUser`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/getUser`, {
+        withCredentials: true,
+      });
+      if (res.status === 200) {
         nav("/dashboard");
       }
     };
@@ -35,14 +32,15 @@ function Login() {
     e.preventDefault();
 
     try {
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/`, {
-        email: formData.email,
-        password: formData.password,
-      });
-      const token = res.data?.token;
-
-      if (res.data?.token) {
-        localStorage.setItem("token", token);
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/`,
+        {
+          email: formData.email,
+          password: formData.password,
+        },
+        {withCredentials: true}
+      );
+      if (res.status === 200) {
         nav("/dashboard");
       }
     } catch (err) {

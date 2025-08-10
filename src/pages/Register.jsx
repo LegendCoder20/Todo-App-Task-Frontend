@@ -15,21 +15,6 @@ function Register() {
     confirmPassword: "",
   });
 
-  useEffect(() => {
-    const getUser = async () => {
-      let token = localStorage.getItem("token");
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}/getUser`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      console.log(res.data);
-    };
-
-    getUser();
-  }, []);
-
   const register = async (e) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
@@ -45,11 +30,10 @@ function Register() {
             name: formData.name,
             email: formData.email,
             password: formData.password,
-          }
+          },
+          {withCredentials: true}
         );
-        const token = registerUser.data?.token;
-        if (registerUser.data?.token) {
-          localStorage.setItem("token", token);
+        if (registerUser.status === 201) {
           nav("/dashboard");
         }
       } catch (err) {
