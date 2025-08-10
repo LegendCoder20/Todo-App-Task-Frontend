@@ -47,7 +47,7 @@ function Register() {
           formData={formData}
           setFormData={setFormData}
           onSubmit={register}
-        ></AuthForm>
+        />
       </div>
     </>
   );
