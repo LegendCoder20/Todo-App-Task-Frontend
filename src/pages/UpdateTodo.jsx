@@ -63,7 +63,7 @@ function UpdateTodo() {
 
   return (
     <>
-      <section class="bg-gray-50 ">
+      <section class="bg-amber-100 ">
         <div class="alertBox bg-green-300">
           {err && <AlertBox message={err}></AlertBox>}
         </div>
@@ -75,7 +75,7 @@ function UpdateTodo() {
             <img class="w-8 h-8 mr-2" src={logo} alt="logo" />
             Todo App
           </a>
-          <div class="w-full bg-white rounded-lg shadow  md:mt-0 sm:max-w-md xl:p-0  ">
+          <div class="w-full bg-gray-100 rounded-lg shadow  md:mt-0 sm:max-w-md xl:p-0  ">
             <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
               <TodoForm
                 mode="updateTodo"

@@ -56,11 +56,10 @@ function Dashboard() {
 
   return (
     <>
-      <div className="text-center ">
-        <div class="alertBox bg-green-300">
-          {message && <AlertBox message={message}></AlertBox>}
-        </div>
-        <div class="text-end mt-2 m-auto w-auto  ">
+      <div className="text-center min-h-screen bg-blue-100">
+        {message && <AlertBox message={message}></AlertBox>}
+
+        <div class="text-end relative top-2  m-auto w-auto  ">
           <Button type="submit" color="red" onClick={logOut}>
             Logout
           </Button>

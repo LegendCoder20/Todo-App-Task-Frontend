@@ -4,7 +4,7 @@ function InputBox({labelName, type, name, placeholder, value, onChange}) {
   return (
     <>
       <div>
-        <label for={name} class="block  text-sm font-medium text-gray-900">
+        <label htmlFor={name} class="block  text-sm font-medium text-gray-900">
           {labelName}
         </label>
         <input
@@ -22,4 +22,4 @@ function InputBox({labelName, type, name, placeholder, value, onChange}) {
   );
 }
 
-export default InputBox;
+export default React.memo(InputBox);

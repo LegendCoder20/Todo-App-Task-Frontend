@@ -1,9 +1,15 @@
-import React from "react";
+import React, {useCallback} from "react";
 import {Link} from "react-router-dom";
 import InputBox from "../components/InputBox";
 import Button from "../components/Button";
 
 function AuthForm({mode, formData, setFormData, onSubmit}) {
+  const handleChange = useCallback(
+    (field) => (e) => {
+      setFormData((prev) => ({...prev, [field]: e.target.value}));
+    },
+    [setFormData]
+  );
   return (
     <>
       <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl text-center ">
@@ -18,7 +24,7 @@ function AuthForm({mode, formData, setFormData, onSubmit}) {
             name="name"
             placeholder="Enter your Name"
             value={formData.name}
-            onChange={(e) => setFormData({...formData, name: e.target.value})}
+            onChange={handleChange("name")}
           ></InputBox>
         )}
         <InputBox
@@ -27,7 +33,7 @@ function AuthForm({mode, formData, setFormData, onSubmit}) {
           name="email"
           placeholder="Enter your Email"
           value={formData.email}
-          onChange={(e) => setFormData({...formData, email: e.target.value})}
+          onChange={handleChange("email")}
         ></InputBox>
         <InputBox
           labelName="Password"
@@ -35,7 +41,7 @@ function AuthForm({mode, formData, setFormData, onSubmit}) {
           name="password"
           placeholder="Enter your Password"
           value={formData.password}
-          onChange={(e) => setFormData({...formData, password: e.target.value})}
+          onChange={handleChange("password")}
         ></InputBox>
         {mode === "register" && (
           <InputBox
@@ -44,9 +50,7 @@ function AuthForm({mode, formData, setFormData, onSubmit}) {
             name="confirmPassword"
             placeholder="Enter your Password Again"
             value={formData.confirmPassword}
-            onChange={(e) =>
-              setFormData({...formData, confirmPassword: e.target.value})
-            }
+            onChange={handleChange("confirmPassword")}
           ></InputBox>
         )}
         <br />
@@ -75,4 +79,4 @@ function AuthForm({mode, formData, setFormData, onSubmit}) {
   );
 }
 
-export default AuthForm;
+export default React.memo(AuthForm);

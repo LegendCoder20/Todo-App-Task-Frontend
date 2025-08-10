@@ -18,7 +18,7 @@ function Register() {
   useEffect(() => {
     const getUser = async () => {
       let token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:5000/api/getUser", {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/getUser`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -32,32 +32,39 @@ function Register() {
 
   const register = async (e) => {
     e.preventDefault();
-    try {
-      const registerUser = await axios.post(
-        "http://localhost:5000/api/register",
-        {
-          name: formData.name,
-          email: formData.email,
-          password: formData.password,
-        }
-      );
-      const token = registerUser.data?.token;
-      if (registerUser.data?.token) {
-        localStorage.setItem("token", token);
-        nav("/dashboard");
-      }
-    } catch (err) {
-      let errMsg = err.response?.data?.message;
-      setError(errMsg);
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords Doesn't Match");
       setTimeout(() => {
         setError("");
       }, 4000);
+    } else {
+      try {
+        const registerUser = await axios.post(
+          `${import.meta.env.VITE_API_URL}/register`,
+          {
+            name: formData.name,
+            email: formData.email,
+            password: formData.password,
+          }
+        );
+        const token = registerUser.data?.token;
+        if (registerUser.data?.token) {
+          localStorage.setItem("token", token);
+          nav("/dashboard");
+        }
+      } catch (err) {
+        let errMsg = err.response?.data?.message;
+        setError(errMsg);
+        setTimeout(() => {
+          setError("");
+        }, 4000);
+      }
     }
   };
 
   return (
     <>
-      <section class="bg-gray-50 ">
+      <section class="bg-blue-400 ">
         <div class="alertBox bg-green-300">
           {err && <AlertBox message={err}></AlertBox>}
         </div>
@@ -69,7 +76,7 @@ function Register() {
             <img class="w-8 h-8 mr-2" src={logo} alt="logo" />
             Todo App
           </a>
-          <div class="w-full bg-white rounded-lg shadow  md:mt-0 sm:max-w-md xl:p-0  ">
+          <div class="w-full bg-gray-100 rounded-lg shadow  md:mt-0 sm:max-w-md xl:p-0  ">
             <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
               <AuthForm
                 mode="register"

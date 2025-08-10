@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useMemo} from "react";
 
 function Button({color = "blue", type = "button", children, onClick}) {
   const colorVariants = {
@@ -22,4 +22,4 @@ function Button({color = "blue", type = "button", children, onClick}) {
   );
 }
 
-export default Button;
+export default React.memo(Button);
