@@ -28,7 +28,7 @@ function CreateTodo() {
         },
       }
     );
-    nav("/dashboard");
+    await nav("/dashboard");
   };
 
   return (

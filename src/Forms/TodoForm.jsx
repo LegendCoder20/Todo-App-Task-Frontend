@@ -1,5 +1,6 @@
 import React from "react";
 import InputBox from "../components/InputBox";
+import Textarea from "../components/Textarea";
 import Button from "../components/Button";
 
 function TodoForm({mode, formData, setFormData, onSubmit}) {
@@ -20,7 +21,7 @@ function TodoForm({mode, formData, setFormData, onSubmit}) {
           value={formData.title}
           onChange={(e) => setFormData({...formData, title: e.target.value})}
         ></InputBox>
-        <InputBox
+        <Textarea
           labelName="Description"
           type="text"
           name="description"
@@ -29,7 +30,7 @@ function TodoForm({mode, formData, setFormData, onSubmit}) {
           onChange={(e) =>
             setFormData({...formData, description: e.target.value})
           }
-        ></InputBox>
+        ></Textarea>
         <br />
         <div class="text-center">
           <Button

@@ -3,10 +3,12 @@ import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import AuthForm from "../Forms/AuthForm";
 import logo from "../../public/todo logo.png";
+import AlertBox from "../components/AlertBox";
 
 function Login() {
   console.log("Re rendered");
   const nav = useNavigate();
+  const [err, setError] = useState("");
 
   const [formData, setFormData] = useState({
     email: "",
@@ -16,17 +18,28 @@ function Login() {
   useEffect(() => {
     const getUser = async () => {
       let token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:5000/api/getUser", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      console.log(res.data);
+      if (token) {
+        const res = await axios.get("http://localhost:5000/api/getUser", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        nav("/dashboard");
+      }
     };
 
     getUser();
+    
   }, []);
+
+  useEffect(() => {
+    first;
+  
+    return () => {
+      second;
+    };
+  }, [third]);
+  
 
   const login = async (e) => {
     e.preventDefault();
@@ -36,19 +49,27 @@ function Login() {
         email: formData.email,
         password: formData.password,
       });
-      token = res.data.token;
+      if (res.data?.token) {
+        localStorage.setItem("token", token);
+        token = res.data.token;
 
-      nav("/dashboard");
+        nav("/dashboard");
+      }
     } catch (err) {
-      console.log(err.response?.data?.message);
-    }
+      let errMsg = err.response?.data?.message;
 
-    localStorage.setItem("token", token);
+      setError(errMsg);
+    }
   };
 
   return (
     <>
       <section class="bg-gray-50 ">
+        <div class="alertBox bg-green-300">
+          {err ? setTimeout(() => {
+            <AlertBox message={err} /> : ""
+          }, 4000)}
+        </div>
         <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
           <a
             href="#"
