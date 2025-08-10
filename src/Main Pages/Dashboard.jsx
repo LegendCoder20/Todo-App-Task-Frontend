@@ -38,12 +38,23 @@ function Dashboard() {
         headers: {Authorization: `Bearer ${token}`},
       }
     );
-    setTodos((prevTodos) => prevTodos.filter(todos._id !== id));
+    setTodos((prevTodos) => prevTodos.filter((todos) => todos._id !== id));
+  };
+
+  const logOut = async () => {
+    localStorage.removeItem("token");
+    nav("/");
   };
 
   return (
     <>
       <div class="dashboard-container">
+        <Button type="submit" color="green" onClick={() => nav("/createTodo")}>
+          Create Todo
+        </Button>
+        <Button type="submit" color="red" onClick={logOut}>
+          Logout
+        </Button>
         {todos.map((todo) => (
           <h2>
             Title - <b>{todo.title}</b>
@@ -52,13 +63,18 @@ function Dashboard() {
             <br />
             <Button
               type="submit"
+              color="yellow"
               onClick={() => {
                 nav(`/updateTodo/${todo._id}`);
               }}
             >
               Update Todo
             </Button>
-            <Button type="submit" onClick={() => deleteTodoData(todo._id)}>
+            <Button
+              type="submit"
+              color="red"
+              onClick={() => deleteTodoData(todo._id)}
+            >
               Delete Todo
             </Button>
             <br />

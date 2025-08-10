@@ -1,15 +1,15 @@
 import React from "react";
+import {Link} from "react-router-dom";
 import InputBox from "../components/InputBox";
 import Button from "../components/Button";
 
 function AuthForm({mode, formData, setFormData, onSubmit}) {
   return (
     <>
-      <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl text-center">
+      <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl text-center ">
         {mode === "login" ? "Login Page" : "Register Page"}
       </h1>
-      <br />
-      <br />
+
       <form onSubmit={onSubmit} className="max-w-sm mx-auto">
         {mode === "register" && (
           <InputBox
@@ -21,7 +21,6 @@ function AuthForm({mode, formData, setFormData, onSubmit}) {
             onChange={(e) => setFormData({...formData, name: e.target.value})}
           ></InputBox>
         )}
-
         <InputBox
           labelName="Email"
           type="text"
@@ -30,7 +29,6 @@ function AuthForm({mode, formData, setFormData, onSubmit}) {
           value={formData.email}
           onChange={(e) => setFormData({...formData, email: e.target.value})}
         ></InputBox>
-
         <InputBox
           labelName="Password"
           type="password"
@@ -51,12 +49,26 @@ function AuthForm({mode, formData, setFormData, onSubmit}) {
             }
           ></InputBox>
         )}
-
         <br />
-        <div class="">
+        <div class="text-center">
           <Button type="submit">
             {mode === "login" ? "Login" : "Register"}
           </Button>
+        </div>
+        <br />
+        <div class="text-center flex justify-center ">
+          <div class="">
+            {mode === "login"
+              ? "Don't have an Account? "
+              : "Already have an Account?"}
+          </div>
+
+          <Link
+            className="pl-2 font-bold text-blue-700 underline"
+            to={mode === "login" ? "/register" : "/"}
+          >
+            {mode === "login" ? " Register" : "Login"}
+          </Link>
         </div>
       </form>
     </>
