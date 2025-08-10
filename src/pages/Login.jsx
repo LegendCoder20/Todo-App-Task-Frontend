@@ -29,36 +29,28 @@ function Login() {
     };
 
     getUser();
-    
   }, []);
-
-  useEffect(() => {
-    first;
-  
-    return () => {
-      second;
-    };
-  }, [third]);
-  
 
   const login = async (e) => {
     e.preventDefault();
-    let token;
+
     try {
       const res = await axios.post("http://localhost:5000/api/", {
         email: formData.email,
         password: formData.password,
       });
+      const token = res.data?.token;
+
       if (res.data?.token) {
         localStorage.setItem("token", token);
-        token = res.data.token;
-
         nav("/dashboard");
       }
     } catch (err) {
       let errMsg = err.response?.data?.message;
-
       setError(errMsg);
+      setTimeout(() => {
+        setError("");
+      }, 4000);
     }
   };
 
@@ -66,9 +58,7 @@ function Login() {
     <>
       <section class="bg-gray-50 ">
         <div class="alertBox bg-green-300">
-          {err ? setTimeout(() => {
-            <AlertBox message={err} /> : ""
-          }, 4000)}
+          {err && <AlertBox message={err}></AlertBox>}
         </div>
         <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
           <a

@@ -3,7 +3,7 @@ import React from "react";
 function AlertBox({message}) {
   return (
     <>
-      <div class="grid place-items-end m-4 ">
+      <div class="fixed top-4 right-4 z-50">
         <div
           class="flex items-center p-4 mb-4 text-blue-800 border-t-4 border-blue-300 bg-blue-50 w-auto"
           role="alert"

@@ -1,9 +1,13 @@
 import React, {useState, useEffect} from "react";
+import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import AuthForm from "../Forms/AuthForm";
 import logo from "../../public/todo logo.png";
+import AlertBox from "../components/AlertBox";
 
 function Register() {
+  const [err, setError] = useState("");
+  const nav = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -28,21 +32,35 @@ function Register() {
 
   const register = async (e) => {
     e.preventDefault();
-    const registerUser = await axios
-      .post("http://localhost:5000/api/register", {
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
-      })
-      .then((data) => {
-        console.log(data);
-      });
-    console.log(registerUser);
+    try {
+      const registerUser = await axios.post(
+        "http://localhost:5000/api/register",
+        {
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+        }
+      );
+      const token = registerUser.data?.token;
+      if (registerUser.data?.token) {
+        localStorage.setItem("token", token);
+        nav("/dashboard");
+      }
+    } catch (err) {
+      let errMsg = err.response?.data?.message;
+      setError(errMsg);
+      setTimeout(() => {
+        setError("");
+      }, 4000);
+    }
   };
 
   return (
     <>
       <section class="bg-gray-50 ">
+        <div class="alertBox bg-green-300">
+          {err && <AlertBox message={err}></AlertBox>}
+        </div>
         <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
           <a
             href="#"

@@ -2,11 +2,13 @@ import React, {useState, useEffect} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import Button from "../components/Button";
+import AlertBox from "../components/AlertBox";
 
 // Put this Below Code in Login and Register Page whendivided it into routes cause this will check if the user already aexit and that in register o rlogin page cause dashboard page is for getting all the todos of that user so
 function Dashboard() {
   const nav = useNavigate();
   const [todos, setTodos] = useState([]);
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     const getTodos = async () => {
@@ -14,13 +16,15 @@ function Dashboard() {
       if (!token) {
         nav("/");
       }
-      const allTodos = await axios.get("http://localhost:5000/api/todos", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const allTodos = await axios.get(
+        `${import.meta.env.VITE_API_URL}/todos`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       setTodos(allTodos.data.todos);
-      console.log("Tpdpds", todos);
     };
 
     getTodos();
@@ -38,6 +42,10 @@ function Dashboard() {
         headers: {Authorization: `Bearer ${token}`},
       }
     );
+    setMessage(deleteTodo.data.message);
+    setTimeout(() => {
+      setMessage("");
+    }, 4000);
     setTodos((prevTodos) => prevTodos.filter((todos) => todos._id !== id));
   };
 
@@ -49,6 +57,9 @@ function Dashboard() {
   return (
     <>
       <div className="text-center ">
+        <div class="alertBox bg-green-300">
+          {message && <AlertBox message={message}></AlertBox>}
+        </div>
         <div class="text-end mt-2 m-auto w-auto  ">
           <Button type="submit" color="red" onClick={logOut}>
             Logout
