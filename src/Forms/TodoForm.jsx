@@ -4,8 +4,6 @@ import Textarea from "../components/Textarea";
 import Button from "../components/Button";
 
 function TodoForm({mode, formData, setFormData, onSubmit}) {
-  console.log(formData);
-
   return (
     <>
       <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl text-center ">

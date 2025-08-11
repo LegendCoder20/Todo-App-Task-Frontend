@@ -6,7 +6,6 @@ import logo from "../../public/todo logo.png";
 import AlertBox from "../components/AlertBox";
 
 function Login() {
-  console.log("Re rendered");
   const nav = useNavigate();
   const [err, setError] = useState("");
 
